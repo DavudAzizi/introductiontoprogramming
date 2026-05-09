@@ -1,105 +1,170 @@
-// CS50x Week 4 — Filter (More): helpers.c
-// ✏️  YOUR CODE GOES HERE
-//
-// Same as Filter-Less PLUS one harder function: edges()
-// grayscale, reflect, blur — identical to Filter-Less
-// edges — Sobel operator for edge detection (replaces sepia)
-
 #include "helpers.h"
 #include <math.h>
-#include <stdlib.h>
 #include <string.h>
 
-// ---------------------------------------------------------------------------
-// TODO 1: GRAYSCALE  (same as Filter-Less)
-// ---------------------------------------------------------------------------
+int cap(int value)
+{
+    if (value > 255)
+    {
+        return 255;
+    }
+
+    return value;
+}
+
+// Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            // TODO: average R+G+B, assign to all channels (use round())
+            int avg = round(
+                (image[i][j].rgbtRed +
+                 image[i][j].rgbtGreen +
+                 image[i][j].rgbtBlue) / 3.0);
+
+            image[i][j].rgbtRed = avg;
+            image[i][j].rgbtGreen = avg;
+            image[i][j].rgbtBlue = avg;
         }
     }
 }
 
-// ---------------------------------------------------------------------------
-// TODO 2: REFLECT  (same as Filter-Less)
-// ---------------------------------------------------------------------------
+// Convert image to sepia
+void sepia(int height, int width, RGBTRIPLE image[height][width])
+{
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            int originalRed = image[i][j].rgbtRed;
+            int originalGreen = image[i][j].rgbtGreen;
+            int originalBlue = image[i][j].rgbtBlue;
+
+            int sepiaRed = round(.393 * originalRed + .769 * originalGreen + .189 * originalBlue);
+            int sepiaGreen = round(.349 * originalRed + .686 * originalGreen + .168 * originalBlue);
+            int sepiaBlue = round(.272 * originalRed + .534 * originalGreen + .131 * originalBlue);
+
+            image[i][j].rgbtRed = cap(sepiaRed);
+            image[i][j].rgbtGreen = cap(sepiaGreen);
+            image[i][j].rgbtBlue = cap(sepiaBlue);
+        }
+    }
+}
+
+// Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
     for (int i = 0; i < height; i++)
     {
-        // TODO: swap image[i][j] and image[i][width-1-j] for j in 0..width/2
+        for (int j = 0; j < width / 2; j++)
+        {
+            RGBTRIPLE temp = image[i][j];
+            image[i][j] = image[i][width - 1 - j];
+            image[i][width - 1 - j] = temp;
+        }
     }
 }
 
-// ---------------------------------------------------------------------------
-// TODO 3: BLUR  (same as Filter-Less)
-// ---------------------------------------------------------------------------
+// Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    // TODO: copy image, then for each pixel average its valid 3x3 neighbourhood
+    RGBTRIPLE copy[height][width];
+    memcpy(copy, image, sizeof(RGBTRIPLE) * height * width);
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            int red = 0;
+            int green = 0;
+            int blue = 0;
+            int count = 0;
+
+            for (int di = -1; di <= 1; di++)
+            {
+                for (int dj = -1; dj <= 1; dj++)
+                {
+                    int ni = i + di;
+                    int nj = j + dj;
+
+                    if (ni >= 0 && ni < height && nj >= 0 && nj < width)
+                    {
+                        red += copy[ni][nj].rgbtRed;
+                        green += copy[ni][nj].rgbtGreen;
+                        blue += copy[ni][nj].rgbtBlue;
+                        count++;
+                    }
+                }
+            }
+
+            image[i][j].rgbtRed = round(red / (float) count);
+            image[i][j].rgbtGreen = round(green / (float) count);
+            image[i][j].rgbtBlue = round(blue / (float) count);
+        }
+    }
 }
 
-// ---------------------------------------------------------------------------
-// TODO 4: EDGES  ⭐⭐⭐⭐  (Filter-More exclusive — harder!)
-// ---------------------------------------------------------------------------
-// Detect edges using the Sobel operator.
-//
-// Background:
-//   The Sobel operator uses two 3×3 kernels (Gx and Gy) to compute the
-//   gradient of brightness in the horizontal and vertical directions.
-//   Pixels with large gradients are "edges".
-//
-// Kernels:
-//   Gx:          Gy:
-//   -1  0  +1    -1 -2 -1
-//   -2  0  +2     0  0  0
-//   -1  0  +1    +1 +2 +1
-//
-// Algorithm (per channel, per pixel):
-//   1. Make a copy of the image first.
-//   2. For each pixel (i, j):
-//      a. Treat out-of-bounds neighbours as black (R=G=B=0).
-//      b. For each channel (R, G, B) separately:
-//         - Compute Gx = sum of (Gx_kernel[di+1][dj+1] * neighbour_channel)
-//         - Compute Gy = sum of (Gy_kernel[di+1][dj+1] * neighbour_channel)
-//         - Final value = round(sqrt(Gx^2 + Gy^2))
-//         - Cap at 255
-//      c. Assign final R, G, B to image[i][j].
-//
-// HINT: Define the Gx and Gy kernels as 2D int arrays.
-// HINT: Use (int) cast when reading copy channels to allow negative arithmetic.
-// HINT: round(sqrt(Gx*Gx + Gy*Gy)) — use sqrt() and round() from <math.h>.
-//
-// Example (pixel surrounded by white pixels on left, black on right):
-//   Gx for red channel will be large → edge detected → bright pixel output.
-// ---------------------------------------------------------------------------
+// Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
-    // Sobel kernels
-    int Gx[3][3] = {
+    RGBTRIPLE copy[height][width];
+    memcpy(copy, image, sizeof(RGBTRIPLE) * height * width);
+
+    int Gx[3][3] =
+    {
         {-1, 0, 1},
         {-2, 0, 2},
         {-1, 0, 1}
     };
-    int Gy[3][3] = {
+
+    int Gy[3][3] =
+    {
         {-1, -2, -1},
-        { 0,  0,  0},
-        { 1,  2,  1}
+        {0, 0, 0},
+        {1, 2, 1}
     };
 
-    // TODO: declare a copy of the image (same as blur)
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            int redX = 0, redY = 0;
+            int greenX = 0, greenY = 0;
+            int blueX = 0, blueY = 0;
 
-    // TODO: outer loops over each pixel (i, j)
-    //   For each pixel:
-    //     Initialize gx_r, gy_r, gx_g, gy_g, gx_b, gy_b = 0
-    //     Inner loops di = -1..1, dj = -1..1:
-    //       - If neighbour (i+di, j+dj) is out of bounds, treat as (0,0,0)
-    //       - Otherwise use copy[i+di][j+dj]
-    //       - Accumulate: gx_r += Gx[di+1][dj+1] * neighbour_red; etc.
-    //     Final channel = min(255, round(sqrt(gx_r^2 + gy_r^2))); etc.
-    //     Assign to image[i][j]
+            for (int di = -1; di <= 1; di++)
+            {
+                for (int dj = -1; dj <= 1; dj++)
+                {
+                    int ni = i + di;
+                    int nj = j + dj;
+
+                    if (ni >= 0 && ni < height && nj >= 0 && nj < width)
+                    {
+                        int kernelX = Gx[di + 1][dj + 1];
+                        int kernelY = Gy[di + 1][dj + 1];
+
+                        redX += copy[ni][nj].rgbtRed * kernelX;
+                        redY += copy[ni][nj].rgbtRed * kernelY;
+
+                        greenX += copy[ni][nj].rgbtGreen * kernelX;
+                        greenY += copy[ni][nj].rgbtGreen * kernelY;
+
+                        blueX += copy[ni][nj].rgbtBlue * kernelX;
+                        blueY += copy[ni][nj].rgbtBlue * kernelY;
+                    }
+                }
+            }
+
+            int finalRed = round(sqrt(redX * redX + redY * redY));
+            int finalGreen = round(sqrt(greenX * greenX + greenY * greenY));
+            int finalBlue = round(sqrt(blueX * blueX + blueY * blueY));
+
+            image[i][j].rgbtRed = cap(finalRed);
+            image[i][j].rgbtGreen = cap(finalGreen);
+            image[i][j].rgbtBlue = cap(finalBlue);
+        }
+    }
 }
