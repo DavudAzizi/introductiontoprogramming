@@ -1,35 +1,53 @@
 # Project 5 — Mini Shopping Cart
-# Author: your name here
+# Author: Davud Azizi
 
 menu = {
-    1: ("Apple",  0.50),
+    1: ("Apple", 0.50),
     2: ("Banana", 0.30),
-    3: ("Milk",   1.20),
-    4: ("Bread",  2.00),
+    3: ("Milk", 1.20),
+    4: ("Bread", 2.00),
 }
 
-cart  = {}   # { item_name: quantity }
+cart = {}
 total = 0.0
 
-# TODO: display the menu
-# print("--- Shop Menu ---")
-# for number, (name, price) in menu.items():
-#     print(f"{number}. {name:<10} ${price:.2f}")
-# print("5. Done")
+print("--- Shop Menu ---")
+for number, item in menu.items():
+    name, price = item
+    print(f"{number}. {name:<8} ${price:.2f}")
+print("5. Done")
 
-# TODO: shopping loop
-# while True:
-#     choice = int(input("\nChoose an item (1-5): "))
-#     if choice == 5:
-#         break
-#     if choice in menu:
-#         ...add to cart, update total...
-#     else:
-#         print("Invalid choice, try again.")
+while True:
+    choice = int(input("Choose an item (1-5): "))
 
-# TODO: print the receipt
-# print("\n--- Receipt ---")
-# for item, qty in cart.items():
-#     ...
-# print(f"Total: ${total:.2f}")
-# print("Thank you!")
+    if choice == 5:
+        break
+
+    if choice in menu:
+        name, price = menu[choice]
+
+        if name in cart:
+            cart[name] += 1
+        else:
+            cart[name] = 1
+
+        total += price
+        print(f"Added {name}. Total: ${total:.2f}")
+    else:
+        print("Invalid choice. Try again.")
+
+print()
+print("--- Receipt ---")
+
+for name, quantity in cart.items():
+    price = 0
+
+    for item_name, item_price in menu.values():
+        if item_name == name:
+            price = item_price
+
+    print(f"{name:<8} x{quantity}   ${price * quantity:.2f}")
+
+print("---------------------")
+print(f"Total: ${total:.2f}")
+print("Thank you!")
