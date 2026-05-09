@@ -1,7 +1,25 @@
-# challenge1.py — Frequency Filter
-# Read favorites.csv, ask for a minimum vote count, print filtered results.
-# No starter hints — build this from scratch using what you learned in week1 and week2.
+students = []
 
-import csv
+while True:
+    name = input("Name: ")
 
-# Your code here
+    if name == "":
+        break
+
+    marks = []
+
+    for i in range(3):
+        mark = float(input(f"Mark {i + 1}: "))
+        marks.append(mark)
+
+    average = sum(marks) / len(marks)
+
+    students.append({
+        "name": name,
+        "average": average
+    })
+
+print("\nResults:")
+
+for student in students:
+    print(f"{student['name']}: {student['average']:.2f}")
