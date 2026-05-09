@@ -1,21 +1,15 @@
 # Project 1 — Temperature Converter
-# Author: your name here
-# Date:   session date here
-#
-# Instructions:
-#   1. Read the README.md in this folder first.
-#   2. Fill in the missing lines below.
-#   3. Test with: 0°C → 32°F | 100°C → 212°F | -40°C → -40°F
+# Author: Davud Azizi
 
-# ── Your solution goes here ───────────────────────────────────────────────────
+choice = input("Convert: (1) Celsius → Fahrenheit  (2) Fahrenheit → Celsius\nChoice: ")
 
-celsius = float(input("Enter temperature in Celsius: "))
-
-# TODO: calculate fahrenheit using the formula F = (C × 9/5) + 32
-# fahrenheit = ...
-
-# TODO: print the result using an f-string
-# print(f"...")
-
-# ── Bonus (optional) ─────────────────────────────────────────────────────────
-# Add a direction menu (C→F or F→C)
+if choice == "1":
+    celsius = float(input("Enter temperature in Celsius: "))
+    fahrenheit = (celsius * 9 / 5) + 32
+    print(f"{celsius}°C = {fahrenheit}°F")
+elif choice == "2":
+    fahrenheit = float(input("Enter temperature in Fahrenheit: "))
+    celsius = (fahrenheit - 32) * 5 / 9
+    print(f"{fahrenheit}°F = {celsius}°C")
+else:
+    print("Invalid choice.")
