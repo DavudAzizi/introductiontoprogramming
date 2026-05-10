@@ -2,16 +2,16 @@
 
 {% block body %}
     <h1>Register</h1>
+    <form action="/register" method="post">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
 
-    <!-- TODO: Create a form that POSTs to /register -->
+        <select name="sport">
+            <option value="">Sport</option>
+            {% for sport in sports %}
+                <option value="{{ sport }}">{{ sport }}</option>
+            {% endfor %}
+        </select>
 
-        <!-- TODO: Add a text input for name -->
-
-        <!-- TODO: Add a <select> dropdown for sport:
-                   - First option: empty default (value="")
-                   - Use a Jinja2 for loop to generate one <option>
-                     per sport from the "sports" variable -->
-
-        <!-- TODO: Add a submit button -->
-
+        <button type="submit">Register</button>
+    </form>
 {% endblock %}
