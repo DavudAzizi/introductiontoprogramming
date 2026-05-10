@@ -1,5 +1,3 @@
-# Adds a layout
-
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -12,4 +10,5 @@ def index():
 
 @app.route("/greet")
 def greet():
-    return render_template("greet.html", name=request.args.get("name", "world"))
+    name = request.args.get("name", "world")
+    return render_template("greet.html", name=name)
