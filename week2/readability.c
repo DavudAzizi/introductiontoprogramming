@@ -9,22 +9,31 @@ int main(void)
     string text = get_string("Text: ");
 
     int letters = 0;
-    int words = 1;
+    int words = 0;
     int sentences = 0;
 
-    for (int i = 0; i < strlen(text); i++)
+    bool in_word = false;
+
+    for (int i = 0, n = strlen(text); i < n; i++)
     {
         if (isalpha(text[i]))
         {
             letters++;
+
+            if (!in_word)
+            {
+                words++;
+                in_word = true;
+            }
         }
-        else if (text[i] == ' ')
+        else if (isspace(text[i]))
         {
-            words++;
+            in_word = false;
         }
         else if (text[i] == '.' || text[i] == '!' || text[i] == '?')
         {
             sentences++;
+            in_word = false;
         }
     }
 
