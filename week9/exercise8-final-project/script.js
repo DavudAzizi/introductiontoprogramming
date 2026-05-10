@@ -1,79 +1,48 @@
-const taskForm = document.querySelector("#taskForm");
-const subjectInput = document.querySelector("#subject");
-const taskInput = document.querySelector("#task");
-const taskList = document.querySelector("#taskList");
-const clearTasks = document.querySelector("#clearTasks");
-const quoteButton = document.querySelector("#quoteButton");
-const quote = document.querySelector("#quote");
+const taskForm = document.getElementById("taskForm");
+const subjectInput = document.getElementById("subject");
+const taskInput = document.getElementById("task");
+const taskList = document.getElementById("taskList");
+const clearTasksButton = document.getElementById("clearTasks");
+const quote = document.getElementById("quote");
+const quoteButton = document.getElementById("quoteButton");
 
-let tasks = JSON.parse(localStorage.getItem("studyTasks")) || [];
+const quotes = [
+  "Success is the sum of small efforts repeated daily.",
+  "Study hard, dream big.",
+  "Discipline beats motivation.",
+  "Every expert was once a beginner.",
+  "Push yourself because no one else will do it for you."
+];
 
-function saveTasks() {
-    localStorage.setItem("studyTasks", JSON.stringify(tasks));
-}
+taskForm.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-function renderTasks() {
-    taskList.innerHTML = "";
+  const subject = subjectInput.value.trim();
+  const task = taskInput.value.trim();
 
-    tasks.forEach(function (item, index) {
-        const li = document.createElement("li");
-        li.textContent = `${item.subject}: ${item.task}`;
+  if (subject === "" || task === "") {
+    quote.textContent = "Please fill both fields.";
+    return;
+  }
 
-        if (item.done) {
-            li.classList.add("done");
-        }
+  const li = document.createElement("li");
+  li.textContent = `${subject}: ${task}`;
 
-        li.addEventListener("click", function () {
-            tasks[index].done = !tasks[index].done;
-            saveTasks();
-            renderTasks();
-        });
+  li.addEventListener("click", function () {
+    li.remove();
+  });
 
-        taskList.appendChild(li);
-    });
-}
+  taskList.appendChild(li);
 
-taskForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const subject = subjectInput.value.trim();
-    const task = taskInput.value.trim();
-
-    if (subject === "" || task === "") {
-        alert("Please fill both fields.");
-        return;
-    }
-
-    tasks.push({
-        subject: subject,
-        task: task,
-        done: false
-    });
-
-    saveTasks();
-    renderTasks();
-
-    subjectInput.value = "";
-    taskInput.value = "";
+  subjectInput.value = "";
+  taskInput.value = "";
 });
 
-clearTasks.addEventListener("click", function () {
-    tasks = [];
-    saveTasks();
-    renderTasks();
+clearTasksButton.addEventListener("click", function () {
+  taskList.innerHTML = "";
 });
 
 quoteButton.addEventListener("click", function () {
-    const quotes = [
-        "Small steps every day lead to big results.",
-        "Study now, be proud later.",
-        "Discipline beats motivation.",
-        "Every expert was once a beginner.",
-        "Your future depends on what you do today."
-    ];
-
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    quote.textContent = quotes[randomIndex];
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  quote.textContent = quotes[randomIndex];
 });
-
-renderTasks();
