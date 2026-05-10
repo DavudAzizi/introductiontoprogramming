@@ -1,5 +1,3 @@
-# Says hello to world
-
 from flask import Flask, render_template
 
 app = Flask(__name__)
