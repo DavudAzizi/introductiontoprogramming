@@ -1,16 +1,14 @@
-# Stores registrants in a dictionary
-
 from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
-
-REGISTRANTS = {}
 
 SPORTS = [
     "Basketball",
     "Soccer",
     "Ultimate Frisbee"
 ]
+
+registrants = {}
 
 
 @app.route("/")
@@ -20,26 +18,19 @@ def index():
 
 @app.route("/register", methods=["POST"])
 def register():
-
-    # Validate name
     name = request.form.get("name")
+    sport = request.form.get("sport")
+
     if not name:
         return render_template("error.html", message="Missing name")
 
-    # Validate sport
-    sport = request.form.get("sport")
-    if not sport:
-        return render_template("error.html", message="Missing sport")
     if sport not in SPORTS:
         return render_template("error.html", message="Invalid sport")
 
-    # Remember registrant
-    REGISTRANTS[name] = sport
-
-    # Confirm registration
+    registrants[name] = sport
     return redirect("/registrants")
 
 
 @app.route("/registrants")
-def registrants():
-    return render_template("registrants.html", registrants=REGISTRANTS)
+def show_registrants():
+    return render_template("registrants.html", registrants=registrants)
