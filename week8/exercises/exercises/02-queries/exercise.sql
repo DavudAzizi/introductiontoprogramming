@@ -1,55 +1,23 @@
--- Exercise 02: Querying Data
--- Databases: school.db and library.db
--- Run with: sqlite3 data/school.db < exercises/02-queries/exercise.sql
---           sqlite3 data/library.db < exercises/02-queries/exercise.sql
+SELECT * FROM students WHERE last_name LIKE '%s%';
 
-.headers on
-.mode column
+SELECT * FROM teachers WHERE email LIKE '%@cs50.harvard.edu';
 
--- 2.1: Students whose last name contains 's' (school.db)
+SELECT first_name, last_name, gpa FROM students ORDER BY gpa DESC LIMIT 5;
 
+SELECT DISTINCT enrollment_year FROM students ORDER BY enrollment_year;
 
+SELECT * FROM courses WHERE department_id IN (1, 2);
 
--- 2.2: Teachers with email ending in @cs50.harvard.edu (school.db)
+SELECT * FROM students WHERE enrollment_year NOT IN (2018);
 
+SELECT * FROM courses ORDER BY credits DESC, title ASC;
 
+SELECT * FROM books WHERE title LIKE 'The%';
 
--- 2.3: Top 5 students by GPA, highest first (school.db)
+SELECT id, member_id, due_date FROM loans WHERE return_date IS NULL;
 
+SELECT * FROM authors WHERE nationality = 'British' ORDER BY last_name;
 
+SELECT * FROM members WHERE membership_type IN ('premium', 'student');
 
--- 2.4: Distinct enrollment years (school.db)
-
-
-
--- 2.5: Courses in department 1 OR 2, using IN (school.db)
-
-
-
--- 2.6: Students who did NOT enroll in 2018, using NOT IN (school.db)
-
-
-
--- 2.7: Courses sorted by credits (desc), then title (asc) (school.db)
-
-
-
--- 2.8: Books whose title starts with 'The' (library.db)
-
-
-
--- 2.9: Loans where return_date is NULL (library.db)
-
-
-
--- 2.10: British authors sorted by last name (library.db)
-
-
-
--- 2.11: Members with membership_type 'premium' or 'student' (library.db)
-
-
-
--- 2.12 CHALLENGE: Students with exactly 4-letter first names (school.db)
-
-
+SELECT * FROM students WHERE first_name LIKE '____';
