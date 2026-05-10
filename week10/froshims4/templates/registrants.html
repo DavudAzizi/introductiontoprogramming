@@ -2,20 +2,18 @@
 
 {% block body %}
     <h1>Registrants</h1>
+
     <table>
-        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Sport</th>
+        </tr>
+
+        {% for name in registrants %}
             <tr>
-                <th>Name</th>
-                <th>Sport</th>
+                <td>{{ name }}</td>
+                <td>{{ registrants[name] }}</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for name in registrants %}
-                <tr>
-                    <td>{{ name }}</td>
-                    <td>{{ registrants[name] }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+        {% endfor %}
     </table>
 {% endblock %}
