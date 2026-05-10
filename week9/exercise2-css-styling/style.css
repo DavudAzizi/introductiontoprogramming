@@ -1,119 +1,44 @@
-/* 
-  Exercise 2: CSS Styling
-  ========================
-  Complete the tasks described in README.md.
-  Do NOT modify index.html — all your work goes here.
-*/
-
-/* =============================================
-   TODO Task 2: Define CSS Custom Properties
-   ============================================= */
-:root {
-  /* Add your custom properties here */
-  /* Example: --color-primary: #your-color; */
+body
+{
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-
-/* =============================================
-   TODO Task 3: Base / Reset Styles
-   ============================================= */
-* {
-  /* Consider a box-sizing reset */
+header
+{
+    background-color: #2563eb;
+    color: white;
+    text-align: center;
+    padding: 30px;
 }
 
-body {
-  /* Set font-family, background-color, color, margin */
+main
+{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px;
+    flex-wrap: wrap;
 }
 
-
-/* =============================================
-   TODO Task 3: Typography — Headings
-   ============================================= */
-h1 {
-  /* Large, impactful heading */
+.card
+{
+    background-color: white;
+    width: 250px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-h2 {
-  /* Section heading */
+.card h2
+{
+    color: #2563eb;
 }
 
-h3 {
-  /* Card heading */
-}
-
-/* TODO Task 3: Pseudo-element — first letter of a paragraph */
-/* p::first-letter { ... } */
-
-
-/* =============================================
-   TODO Task 3: Navigation Links
-   ============================================= */
-nav {
-  /* Style the nav bar */
-}
-
-nav a {
-  /* No underline, some padding, use your color variable */
-}
-
-nav a:hover {
-  /* Add an underline or color change on hover */
-}
-
-nav a:focus {
-  /* Make focus state clearly visible (don't remove it!) */
-}
-
-
-/* =============================================
-   TODO Task 4: Header / Hero
-   ============================================= */
-#hero {
-  /* Background color, padding, text alignment */
-}
-
-
-/* =============================================
-   TODO Task 4: Cards & Box Model
-   ============================================= */
-.card-grid {
-  /* Space the cards — you can use basic margin or any layout */
-}
-
-.card {
-  /* 
-    Show off the box model:
-    - padding (inside space)
-    - border (visible edge)
-    - margin (outside space)
-    - border-radius (rounded corners)
-  */
-}
-
-
-/* =============================================
-   TODO Task 5: Alternating List Items
-   ============================================= */
-.fancy-list {
-  /* Remove default bullets, add padding */
-}
-
-.fancy-list li {
-  /* Base styles for list items */
-}
-
-.fancy-list li:nth-child(odd) {
-  /* Different background for odd items */
-}
-
-.fancy-list li:nth-child(even) {
-  /* Different background for even items */
-}
-
-
-/* =============================================
-   TODO Task 6: Footer
-   ============================================= */
-footer {
-  /* Distinguish the footer from main content */
+.card:hover
+{
+    transform: scale(1.03);
+    transition: 0.3s;
 }
