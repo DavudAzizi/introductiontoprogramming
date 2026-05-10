@@ -1,19 +1,93 @@
-<!-- 
-  Exercise 1: HTML Basics
-  ========================
-  Your job: Fix and complete this HTML document.
-  Read the README.md for full instructions.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Davud Azizi - Personal Profile</title>
+</head>
+<body>
 
-  TODO Task 1: Add missing document structure (DOCTYPE, html, head, body, title, meta tags)
-  TODO Task 2: Add semantic sections (header, nav, main with three sections)
-  TODO Task 3: Add content (paragraphs, lists, table)
-  TODO Task 4: Add media (images, figure, iframe)
-  TODO Task 5: Ensure accessibility (alt text, heading order, meaningful link text)
--->
+    <header>
+        <h1>Davud Azizi</h1>
+        <p>Student and future software engineer.</p>
 
-<!-- DELETE this comment and start your document here -->
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <h1>My Profile Page</h1>
-  <p>About me goes here...</p>
+    <main>
 
-<!-- HINT: This page is broken — it's missing most of its required structure! -->
+        <section id="about">
+            <h2>About Me</h2>
+
+            <p>
+                Hello! My name is Davud Azizi and I am learning programming,
+                web development, databases, and computer science.
+            </p>
+
+            <img
+                src="https://placehold.co/300x200"
+                alt="Profile placeholder image"
+            >
+
+            <p>
+                I enjoy building projects and learning new technologies.
+            </p>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Python</li>
+                <li>SQL</li>
+                <li>GitHub</li>
+            </ul>
+
+            <ol>
+                <li>Programming</li>
+                <li>Problem Solving</li>
+                <li>Web Development</li>
+            </ol>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+
+            <table border="1">
+                <tr>
+                    <th>Platform</th>
+                    <th>Link</th>
+                </tr>
+
+                <tr>
+                    <td>GitHub</td>
+                    <td>
+                        <a href="https://github.com/DavudAzizi">
+                            DavudAzizi
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Email</td>
+                    <td>davud@example.com</td>
+                </tr>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 Davud Azizi</p>
+    </footer>
+
+</body>
+</html>
