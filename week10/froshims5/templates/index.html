@@ -3,12 +3,13 @@
 {% block body %}
     <h1>Register</h1>
 
-    <!-- TODO: Create a form that POSTs to /register -->
+    <form action="/register" method="post">
+        <input autocomplete="off" autofocus name="name" placeholder="Name" type="text">
 
-        <!-- TODO: Add a text input for name -->
+        {% for sport in sports %}
+            <input name="sport" type="radio" value="{{ sport }}"> {{ sport }}
+        {% endfor %}
 
-        <!-- TODO: Use a Jinja2 for loop to render one radio button per sport -->
-
-        <!-- TODO: Add a submit button -->
-
+        <button type="submit">Register</button>
+    </form>
 {% endblock %}
