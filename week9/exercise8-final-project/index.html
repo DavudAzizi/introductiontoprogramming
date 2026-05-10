@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Final Project — Week 9</title>
-  <!-- 
-    FINAL PROJECT STARTER TEMPLATE
-    ================================
-    Replace everything below with your project.
-    See README.md for the three project options and all requirements.
-    
-    Choose your option:
-      A) Weather Dashboard
-      B) Task Manager
-      C) Quiz App
-  -->
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Project - Study Planner</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>Study Planner</h1>
+        <p>Plan your lessons, save tasks, and track progress.</p>
+    </header>
 
-  <!-- Your HTML goes here -->
-  <main style="padding: 4rem; text-align: center; font-family: system-ui, sans-serif;">
-    <h1>🏗️ Final Project</h1>
-    <p>Replace this template with your chosen project. Good luck!</p>
-    <p>Options: <strong>A) Weather Dashboard</strong> · <strong>B) Task Manager</strong> · <strong>C) Quiz App</strong></p>
-    <p>Read <code>README.md</code> for full instructions.</p>
-  </main>
+    <main>
+        <section class="card">
+            <h2>Add Study Task</h2>
 
-  <script src="script.js"></script>
+            <form id="taskForm">
+                <input type="text" id="subject" placeholder="Subject">
+                <input type="text" id="task" placeholder="Task">
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Your Tasks</h2>
+            <ul id="taskList"></ul>
+            <button id="clearTasks">Clear All</button>
+        </section>
+
+        <section class="card">
+            <h2>Motivation</h2>
+            <button id="quoteButton">Get Quote</button>
+            <p id="quote"></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
