@@ -1,45 +1,85 @@
--- Exercise 05: Subqueries
--- Databases: school.db and library.db
+SELECT *
+FROM students
+WHERE gpa > (SELECT AVG(gpa) FROM students);
 
-.headers on
-.mode column
+SELECT *
+FROM students
+WHERE id IN (
+    SELECT student_id
+    FROM enrollments
+    WHERE course_id = (
+        SELECT id FROM courses WHERE code = 'CS50'
+    )
+);
 
--- 5.1: Students with GPA above the average (school.db)
+SELECT *
+FROM students
+WHERE id NOT IN (
+    SELECT student_id
+    FROM enrollments
+    WHERE course_id = (
+        SELECT id FROM courses WHERE code = 'CS50'
+    )
+);
 
+SELECT *
+FROM courses
+WHERE teacher_id = (
+    SELECT id FROM teachers WHERE salary = (SELECT MAX(salary) FROM teachers)
+);
 
+SELECT s.*
+FROM students s
+JOIN (
+    SELECT student_id, COUNT(*) AS course_count
+    FROM enrollments
+    GROUP BY student_id
+) ec ON s.id = ec.student_id
+WHERE ec.course_count >= 3;
 
--- 5.2: Students enrolled in CS50 (use subquery) (school.db)
+SELECT *
+FROM members
+WHERE id IN (
+    SELECT member_id
+    FROM loans
+    GROUP BY member_id
+    HAVING COUNT(*) > 2
+);
 
+SELECT *
+FROM books
+WHERE pages > (SELECT AVG(pages) FROM books);
 
+SELECT *
+FROM students s
+WHERE EXISTS (
+    SELECT 1
+    FROM enrollments e
+    JOIN grades g ON g.enrollment_id = e.id
+    WHERE e.student_id = s.id
+);
 
--- 5.3: Students NOT enrolled in CS50 (school.db)
+SELECT *
+FROM courses c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM enrollments e
+    JOIN grades g ON g.enrollment_id = e.id
+    WHERE e.course_id = c.id
+);
 
-
-
--- 5.4: Courses taught by the highest-paid teacher (school.db)
-
-
-
--- 5.5: Students enrolled in 3 or more courses (subquery in FROM) (school.db)
-
-
-
--- 5.6: Members who borrowed more than 2 books (library.db)
-
-
-
--- 5.7: Books with more pages than average (library.db)
-
-
-
--- 5.8: Students with at least one grade (EXISTS) (school.db)
-
-
-
--- 5.9: Courses with no grades recorded (NOT EXISTS) (school.db)
-
-
-
--- 5.10 CHALLENGE: Course(s) with the most enrollments (no LIMIT) (school.db)
-
-
+SELECT *
+FROM courses
+WHERE id IN (
+    SELECT course_id
+    FROM enrollments
+    GROUP BY course_id
+    HAVING COUNT(*) = (
+        SELECT MAX(count)
+        FROM (
+            SELECT COUNT(*) AS count
+            FROM enrollments
+            GROUP BY course_id
+        )
+    )
+);
